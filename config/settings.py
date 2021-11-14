@@ -42,6 +42,11 @@ INSTALLED_APPS = [
 
     # REST
     'rest_framework',
+
+    # My app
+    'account',
+    'group',
+    'introduction',
 ]
 
 MIDDLEWARE = [
