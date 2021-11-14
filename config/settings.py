@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # My app
     'account',
     'group',
+    'question',
     'introduction',
 ]
 
