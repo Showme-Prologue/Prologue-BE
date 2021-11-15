@@ -11,7 +11,8 @@ class IntroductionComponentSerializer(serializers.ModelSerializer):
     questions = IntroductionQuestionSerializer(many=True, read_only=True)
     class Meta:
         model = IntroductionComponent
-        fields = '__all__'
+        #fields = '__all__'
+        fields = ('question_order', 'questions', 'question_id', 'answer')
         depth = 1
 
 class IntroductionSerializer(serializers.ModelSerializer):

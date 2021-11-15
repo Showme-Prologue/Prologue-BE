@@ -17,7 +17,7 @@ class IntroductionListViewSet(ModelViewSet):
     serializer_class = IntroductionSerializer
 
 class IntroductionComponentListViewSet(ModelViewSet):
-    queryset = IntroductionComponent.objects.all()
+    queryset = IntroductionComponent.objects.order_by('question_order')
     serializer_class = IntroductionComponentSerializer
 
 class IntroductionQuestionListViewSet(ModelViewSet):

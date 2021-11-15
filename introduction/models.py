@@ -23,6 +23,7 @@ class IntroductionQuestion(models.Model):
 
 class IntroductionComponent(models.Model):
     introduction_id = models.ForeignKey(Introduction, related_name='components', on_delete=models.CASCADE)
+    question_order = models.PositiveIntegerField()
     question_id = models.ForeignKey(IntroductionQuestion, related_name='questions', on_delete=models.CASCADE)
     answer = models.TextField()
 
