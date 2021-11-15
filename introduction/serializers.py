@@ -17,6 +17,7 @@ class IntroductionComponentSerializer(serializers.ModelSerializer):
 
 class IntroductionSerializer(serializers.ModelSerializer):
     components = IntroductionComponentSerializer(many=True, read_only=True)
+    image = serializers.ImageField(use_url=True)
     class Meta:
         model = Introduction
         fields = '__all__'
