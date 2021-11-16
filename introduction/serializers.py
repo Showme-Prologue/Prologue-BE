@@ -5,19 +5,20 @@ from .models import Introduction, IntroductionComponent, IntroductionQuestion
 class IntroductionQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = IntroductionQuestion
-        fields = '__all__'
+        fields = ('question', 'is_updated')
 
 class IntroductionComponentSerializer(serializers.ModelSerializer):
-    questions = IntroductionQuestionSerializer(many=True, read_only=True)
+    questions = serializers.ReadOnlyField(source='question_id.question')
+    #questions = IntroductionQuestionSerializer(many=True, read_only=True)
     class Meta:
         model = IntroductionComponent
         #fields = '__all__'
-        fields = ('question_order', 'questions', 'question_id', 'answer')
-        depth = 1
+        fields = ('sequence', 'questions', 'answer')
 
 class IntroductionSerializer(serializers.ModelSerializer):
     components = IntroductionComponentSerializer(many=True, read_only=True)
     image = serializers.ImageField(use_url=True)
     class Meta:
         model = Introduction
-        fields = '__all__'
+        #fields = '__all__'
+        exclude = ['created_at', 'updated_at', 'group_code']

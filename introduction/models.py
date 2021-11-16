@@ -23,10 +23,11 @@ class IntroductionQuestion(models.Model):
         return f"{self.group_code} - {self.question[:50]}"
 
 class IntroductionComponent(models.Model):
-    introduction_id = models.ForeignKey(Introduction, related_name='components', on_delete=models.CASCADE)
-    question_order = models.PositiveIntegerField()
+    introduction_id = models.ForeignKey(Introduction, related_name='qna', on_delete=models.CASCADE)
+    sequence = models.PositiveIntegerField()
     question_id = models.ForeignKey(IntroductionQuestion, related_name='questions', on_delete=models.CASCADE)
     answer = models.TextField()
+    isSimpleInfo = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.question_id} - {self.answer[:30]}"
