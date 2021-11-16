@@ -30,3 +30,11 @@ class IntroductionComponent(models.Model):
 
     def __str__(self):
         return f"{self.question_id} - {self.answer[:30]}"
+
+class IntroductionSimpleAnswer(models.Model):
+    introduction_id = models.ForeignKey(Introduction, on_delete=models.CASCADE)
+    sequence = models.PositiveIntegerField()
+    answer = models.TextField()
+
+    def __str__(self):
+        return f"{self.introduction_id}번 자기소개의 {self.sequence}번째 : {self.answer}"
