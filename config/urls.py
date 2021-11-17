@@ -19,14 +19,16 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from rest_framework import routers
 
-from introduction.views import IntroductionListViewSet, IntroductionComponentListViewSet, IntroductionQuestionListViewSet
+#from introduction.views import IntroductionListViewSet, IntroductionComponentListViewSet, IntroductionQuestionListViewSet
+from introduction import views
 
-router = routers.DefaultRouter()
-router.register('introduction', IntroductionListViewSet)
-router.register('introductionComponent', IntroductionComponentListViewSet)
-router.register('introductionQuestion', IntroductionQuestionListViewSet)
+# router = routers.DefaultRouter()
+# router.register('introduction', IntroductionListViewSet)
+# router.register('introductionComponent', IntroductionComponentListViewSet)
+# router.register('introductionQuestion', IntroductionQuestionListViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
+    #path('api/', include(router.urls)),
+    path('api/introductions/', views.introduction_list, name='introduction_list'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
