@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 
-from .secret_conf import get_secret_key
+from .secret_conf import get_secret_key, get_aws_secret_key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 
     # deploy
     'corsheaders',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -139,16 +140,28 @@ USE_L10N = True
 
 USE_TZ = True
 
+# AWS S3
+AWS_ACCESS_KEY_ID = get_aws_secret_key()['access_key_id']
+AWS_SECRET_ACCESS_KEY = get_aws_secret_key()['secret_access_key']
+AWS_S3_REGION_NAME = 'ap-northeast-2'
+AWS_STORAGE_BUCKET_NAME = get_aws_secret_key()['bucket_name']
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
+AWS_DEFAULT_ACL = 'public-read'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static') # need for collectstatic
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static')
+# ]
+#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+DEFAULT_FILE_STORAGE = 'config.storage.MediaRootS3BotoStorage'
+STATICFILES_STORAGE = 'config.storage.StaticRootS3BotoStorage'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') # need for collectstatic
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
