@@ -21,6 +21,7 @@ from rest_framework import routers
 
 #from introduction.views import IntroductionListViewSet, IntroductionComponentListViewSet, IntroductionQuestionListViewSet
 from introduction import views
+import introduction.urls
 
 # router = routers.DefaultRouter()
 # router.register('introduction', IntroductionListViewSet)
@@ -30,5 +31,5 @@ from introduction import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     #path('api/', include(router.urls)),
-    path('api/introductions/', views.introduction_list, name='introduction_list'),
+    path('api/', include(introduction.urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
