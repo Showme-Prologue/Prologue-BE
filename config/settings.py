@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from datetime import timedelta
 
 from .secret_conf import get_secret_key, get_aws_secret_key
 
@@ -33,6 +34,30 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
+# REST Framework Apps
+REST_APPS = [
+    'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount.providers.google',
+]
+
+# Apps in Prologue Project
+PROJECT_APPS = [
+    'account',
+    'group',
+    'introduction',
+]
+
+# Apps for Deploy
+DEPLOY_APPS = [
+    'corsheaders',
+    'storages',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,19 +65,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+] + REST_APPS + PROJECT_APPS + DEPLOY_APPS
 
-    # REST
-    'rest_framework',
+SITE_ID = 1
 
-    # My app
-    'account',
-    'group',
-    'introduction',
+AUTH_USER_MODEL = 'account.User'
 
-    # deploy
-    'corsheaders',
-    'storages',
-]
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ),
+}
 
 MIDDLEWARE = [
     # CORS
@@ -171,3 +198,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # media settings
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# JWT Settings
+REST_USE_JWT = True
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=28),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
