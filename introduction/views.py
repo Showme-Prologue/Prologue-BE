@@ -10,6 +10,7 @@ import random
 
 from .models import Introduction, IntroductionComponent, IntroductionQuestion
 from account.models import User
+from group.models import GroupUserList
 from .serializers import IntroductionSerializer, IntroductionComponentSerializer, IntroductionQuestionSerializer
 
 # Create your views here.
@@ -31,6 +32,11 @@ def introduction_list(request):
     if request.method == 'POST':
         pass
     else:
+        if request.GET.get('userId') is not None:
+            user = get_object_or_404(User, pk=request.GET.get('userId'))
+            introduction = Introduction.objects.get(userId=user)
+            introduction_serializer = IntroductionSerializer(introduction)
+            return Response(introduction_serializer.data)
         introductions = Introduction.objects.filter(groupCode=request.GET.get('groupCode'))
         introduction_list_serializers = IntroductionSerializer(introductions, many=True)
         return Response(introduction_list_serializers.data)
