@@ -9,7 +9,7 @@ class Introduction(models.Model):
     group_code = models.ForeignKey(Group, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(blank=True, null=True, default='media/default.png', upload_to="uploads")
+    image = models.ImageField(blank=True, null=True, default='media/default.png', upload_to=f"introductions/{group_code}")
 
     def __str__(self):
         return f"{self.id} / {self.group_code}"
