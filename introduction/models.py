@@ -1,33 +1,34 @@
 from django.db import models
 
+from account.models import User
 from group.models import Group
 
 # Create your models here.
 
 class Introduction(models.Model):
-    #user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    group_code = models.ForeignKey(Group, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+    userId = models.ForeignKey(User, on_delete=models.CASCADE)
+    groupCode = models.ForeignKey(Group, on_delete=models.CASCADE)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    updatedAt = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(blank=True, null=True, default='media/default.png', upload_to="uploads")
 
     def __str__(self):
-        return f"{self.id} / {self.group_code}"
+        return f"{self.id} / {self.groupCode}"
 
 class IntroductionQuestion(models.Model):
-    group_code = models.ForeignKey(Group, on_delete=models.CASCADE)
+    groupCode = models.ForeignKey(Group, on_delete=models.CASCADE)
     question = models.TextField()
-    is_updated = models.BooleanField(default=True)
+    isUpdated = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.group_code} - {self.question[:50]}"
+        return f"{self.groupCode} - {self.question[:50]}"
 
 class IntroductionComponent(models.Model):
-    introduction_id = models.ForeignKey(Introduction, related_name='qna', on_delete=models.CASCADE)
+    introductionId = models.ForeignKey(Introduction, related_name='qna', on_delete=models.CASCADE)
     sequence = models.PositiveIntegerField()
-    question_id = models.ForeignKey(IntroductionQuestion, related_name='questions', on_delete=models.CASCADE)
+    questionId = models.ForeignKey(IntroductionQuestion, related_name='questions', on_delete=models.CASCADE)
     answer = models.TextField()
-    is_simple_info = models.BooleanField(default=False)
+    isSimpleInfo = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.question_id} - {self.answer[:30]}"
+        return f"{self.questionId} - {self.answer[:30]}"
