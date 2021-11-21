@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView
@@ -8,7 +9,8 @@ from rest_framework.response import Response
 import random
 
 from .models import Introduction, IntroductionComponent, IntroductionQuestion
-from .serializers import IntroductionListSerializer, IntroductionComponentSerializer, IntroductionQuestionSerializer
+from account.models import User
+from .serializers import IntroductionSerializer, IntroductionComponentSerializer, IntroductionQuestionSerializer
 
 # Create your views here.
 
@@ -29,6 +31,13 @@ def introduction_list(request):
     if request.method == 'POST':
         pass
     else:
-        introductions = Introduction.objects.filter(group_code=request.GET.get('groupCode'))
-        introduction_list_serializers = IntroductionListSerializer(introductions, many=True)
+        introductions = Introduction.objects.filter(groupCode=request.GET.get('groupCode'))
+        introduction_list_serializers = IntroductionSerializer(introductions, many=True)
         return Response(introduction_list_serializers.data)
+
+@api_view(['GET'])
+def introduction(request, userId):
+    user = get_object_or_404(User, pk=userId)
+    introduction = Introduction.objects.get(userId=user)
+    introduction_serializer = IntroductionSerializer(introduction)
+    return Response(introduction_serializer.data)
